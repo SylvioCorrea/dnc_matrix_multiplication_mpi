@@ -92,7 +92,7 @@ void main(int argc, char** argv) {
         bc = div_buffer[3];
         curr_dim = div_buffer[4];
         
-        printf("[%d] received from %d.\ncurr_dim = %d\n", my_rank, status.MPI_SOURCE, curr_dim);
+        printf("[%d] received from %d. curr_dim = %d\n", my_rank, status.MPI_SOURCE, curr_dim);
 
         
     } else { //root
