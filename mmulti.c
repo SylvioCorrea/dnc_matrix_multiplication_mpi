@@ -2,6 +2,19 @@
 #include <stdio.h>
 #include <string.h>
 
+
+//Initializes a matrix containing sequential numbers between 0+offset and 8+offset.
+void matrix_init(int *M, int size, int offset) {
+    int i,j,n;
+    n=0;
+    for(i=0; i<size; i++) {
+        for(j=0; j<size; j++) {
+            M[i*size + j] = n+offset;
+            n = (n+1)%9;
+        }
+    }
+}
+
 void naive_multi(int *A, int *B, int *C, int size) {
     int i, j, k;
     for(i=0; i<size; i++) {

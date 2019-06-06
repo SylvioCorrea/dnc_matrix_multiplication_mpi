@@ -19,25 +19,14 @@ implementation: 2^(TREE_HEIGHT) - 1
 #include "mmulti.h"
 
 //MATRIX_DIM **must** be a power of 2. 2 is the minimum.
-#define MATRIX_DIM 8
+#define MATRIX_DIM 16
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
 //a power of 2.
 //2 is the minimum.
-#define DELTA 2
+#define DELTA 4
 
-//Initializes a matrix containing sequential numbers between 0+offset and 8+offset.
-void matrix_init(int *M, int size, int offset) {
-    int i,j,n;
-    n=0;
-    for(i=0; i<size; i++) {
-        for(j=0; j<size; j++) {
-            M[i*size + j] = n+offset;
-            n = (n+1)%9;
-        }
-    }
-}
 
 void main(int argc, char** argv) {
     
