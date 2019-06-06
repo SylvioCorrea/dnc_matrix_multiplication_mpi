@@ -17,14 +17,14 @@ C: modelo do artigo onde o pai divide o trabalho com ele
 #include "mmulti.h"
 
 //MATRIX_DIM **must** be a power of 2. 2 is the minimum.
-#define MATRIX_DIM (2^4)
+#define MATRIX_DIM (2<<4)
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
 //a power of 2. Must be equal to MATRIX_DIM/(2^(h-1))
 //where h is the height of the tree.
 //2 is the minimum value.
-#define DELTA (2^2)
+#define DELTA (2<<2)
 
 
 void main(int argc, char** argv) {
