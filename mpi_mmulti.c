@@ -77,6 +77,8 @@ void main(int argc, char** argv) {
     matrix_init(A, MATRIX_DIM, 0);
     matrix_init(B, MATRIX_DIM, 2);
     
+    printf("[%d]start\n", my_rank);
+    
     if ( my_rank != 0 ) { //not root
         
         //div_buffer receives indexes for the submatrices of A and B of the division
@@ -96,6 +98,11 @@ void main(int argc, char** argv) {
         printf("Dimensions of the matrices: %dx%d\n", MATRIX_DIM, MATRIX_DIM);
         printf("conquering point: %d\n", DELTA);
         printf("number of processes: %d\n\n", proc_n);
+        printf("matrix A:\n");
+        print_matrix(A, MATRIX_DIM);
+        printf("\nmatrix B:\n");
+        print_matrix(B, MATRIX_DIM);
+        
         curr_dim = MATRIX_DIM;
     }
     
