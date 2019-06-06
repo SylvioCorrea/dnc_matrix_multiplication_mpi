@@ -54,12 +54,13 @@ void main(int argc, char** argv) {
 	//in multiplication stages of the computation avoiding having to actually
 	//allocate and copy the submatrices.
 	int al, ac, bl, bc;
+	al = ac = bl = bc = 0;
 	
 	//Current dimensions of the matrices we are working with;
 	int curr_dim;
 	
 	//Message buffer for the above numbers.
-	int div_buffer[5] = {0, 0, 0, 0, MATRIX_DIM};
+	int div_buffer[5] = {al, ac, bl, bc, MATRIX_DIM};
 	
 	int half;
 	int child1, child2, child3, child4,
