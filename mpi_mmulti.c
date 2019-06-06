@@ -18,13 +18,13 @@ implementation: 2^(TREE_HEIGHT) - 1
 #include "mpi.h"
 #include "mmulti.h"
 
-//MATRIX_DIM **must** be a power of 2.
-#define MATRIX_DIM 2
+//MATRIX_DIM **must** be a power of 2. 2 is the minimum.
+#define MATRIX_DIM 4
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
 //a power of 2.
-//2 is the minimum delta.
+//2 is the minimum.
 #define DELTA 2
 
 //Initializes a matrix containing sequential numbers between 0+offset and 8+offset.
