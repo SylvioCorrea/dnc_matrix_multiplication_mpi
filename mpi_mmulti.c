@@ -17,21 +17,23 @@ C: modelo do artigo onde o pai divide o trabalho com ele
 #include "mmulti.h"
 
 //MATRIX_DIM **must** be a power of 2. 2 is the minimum.
-#define MATRIX_DIM 1024
+#define MATRIX_DIM 2^4
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
 //a power of 2. Must be equal to MATRIX_DIM/(2^(h-1))
 //where h is the height of the tree.
 //2 is the minimum value.
-#define DELTA 256
+#define DELTA 2^2
 
 
 void main(int argc, char** argv) {
     
     //A and B are square matrices of same size
-    int A[MATRIX_DIM*MATRIX_DIM];
-    int B[MATRIX_DIM*MATRIX_DIM];
+    int *A;
+    int *B;
+    matrix_alloc(&A, MATRIX_DIM);
+    matrix_alloc(&B, MATRIX_DIM);
     
     //C points to the resulting matrix
     int *C;
