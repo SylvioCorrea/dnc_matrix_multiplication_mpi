@@ -19,7 +19,7 @@ implementation: 2^(TREE_HEIGHT) - 1
 #include "mmulti.h"
 
 //MATRIX_DIM **must** be a power of 2. 2 is the minimum.
-#define MATRIX_DIM 4
+#define MATRIX_DIM 8
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
