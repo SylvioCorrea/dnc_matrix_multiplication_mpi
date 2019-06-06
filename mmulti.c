@@ -75,6 +75,8 @@ void mmulti(int *A, int *B,
     if(s==2) {
         printf("test\n");
         //Regular multiplication for small 2x2 matrix
+        printf("al = %d, ac = %d, bl = %d, bc = %d\n", al, ac, bl, bc);
+        
         int a11 = A[al*size + ac];
         int a12 = A[al*size + ac+1];
         int a21 = A[(al+1)*size + ac];
