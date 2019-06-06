@@ -8,8 +8,6 @@ B: inflar propositalmente o número de processos para mais
 C: modelo do artigo onde o pai divide o trabalho com ele
     mesmo mais um filho
 
-IMPORTANT: expected number of process to run this
-implementation: 2^(TREE_HEIGHT) - 1
 */
 
 #include <stdlib.h>
@@ -19,13 +17,14 @@ implementation: 2^(TREE_HEIGHT) - 1
 #include "mmulti.h"
 
 //MATRIX_DIM **must** be a power of 2. 2 is the minimum.
-#define MATRIX_DIM 16
+#define MATRIX_DIM 1024
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
-//a power of 2.
-//2 is the minimum.
-#define DELTA 4
+//a power of 2. Must be equal to MATRIX_DIM/(2^(h-1))
+//where h is the height of the tree.
+//2 is the minimum value.
+#define DELTA 256
 
 
 void main(int argc, char** argv) {
