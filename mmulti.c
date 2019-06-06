@@ -71,11 +71,11 @@ void mmulti(int *A, int *B,
             int al, int ac,
             int bl, int bc,
             int *C, int s, int size) {
-    printf("s, size: %d, %d\n", s, size);
+    //printf("s, size: %d, %d\n", s, size);
     if(s==2) {
-        printf("test\n");
+        //printf("test\n");
         //Regular multiplication for small 2x2 matrix
-        printf("al = %d, ac = %d, bl = %d, bc = %d\n", al, ac, bl, bc);
+        //printf("al = %d, ac = %d, bl = %d, bc = %d\n", al, ac, bl, bc);
         
         int a11 = A[al*size + ac];
         int a12 = A[al*size + ac+1];
@@ -83,14 +83,14 @@ void mmulti(int *A, int *B,
         int a22 = A[(al+1)*size + ac+1];
         //printf("%d,%d\n%d,%d\n\n", a11, a12, a21, a22);
         
-        printf("test2\n");
+        //printf("test2\n");
         int b11 = B[bl*size + bc];
         int b12 = B[bl*size + bc+1];
         int b21 = B[(bl+1)*size + bc];
         int b22 = B[(bl+1)*size + bc+1];
         //printf("%d,%d\n%d,%d\n\n", b11, b12, b21, b22);
         
-        printf("test3\n");
+        //printf("test3\n");
         C[0] = a11*b11 + a12*b21;
         //printf("test4\n");
         C[1] = a11*b12 + a12*b22;
@@ -101,7 +101,7 @@ void mmulti(int *A, int *B,
         //printf("test7\n");
         return;
     }
-    printf("despair\n");
+    //printf("despair\n");
     int half = s/2;
     
     int *tempM1;
