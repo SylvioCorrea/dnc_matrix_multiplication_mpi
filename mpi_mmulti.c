@@ -17,14 +17,14 @@ C: modelo do artigo onde o pai divide o trabalho com ele
 #include "mmulti.h"
 
 //MATRIX_DIM **must** be a power of 2. 2 is the minimum.
-#define MATRIX_DIM (2<<10)
+#define MATRIX_DIM (2<<12)
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
 //a power of 2. Must be equal to MATRIX_DIM/(2^(h-1))
 //where h is the height of the tree.
 //2 is the minimum value.
-#define DELTA (2<<8)
+#define DELTA (2<<10)
 
 
 void main(int argc, char** argv) {
@@ -66,8 +66,8 @@ void main(int argc, char** argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
     
-    matrix_init(A, MATRIX_DIM, 0);
-    matrix_init(B, MATRIX_DIM, 2);
+    //matrix_init(A, MATRIX_DIM, 0);
+    //matrix_init(B, MATRIX_DIM, 2);
     
     printf("[%d]start\n", my_rank);
     
@@ -213,8 +213,8 @@ void main(int argc, char** argv) {
         
     
     } else { //root
-        printf("Root results:\n");
-        print_matrix(C, curr_dim);
+        //printf("Root results:\n");
+        //print_matrix(C, curr_dim);
     }
     
     free(C);
