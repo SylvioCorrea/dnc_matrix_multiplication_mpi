@@ -63,6 +63,7 @@ void main(int argc, char** argv) {
 	int div_buffer[5] = {al, ac, bl, bc, MATRIX_DIM};
 	
 	int half;
+	int father;
 	int child1, child2, child3, child4,
 	    child5, child6, child7, child8;
 	    
@@ -91,7 +92,7 @@ void main(int argc, char** argv) {
         bl = div_buffer[2];
         bc = div_buffer[3];
         curr_dim = div_buffer[4];
-        
+        father = status.MPI_SOURCE;
         printf("[%d] received from %d. curr_dim = %d\n", my_rank, status.MPI_SOURCE, curr_dim);
 
         
@@ -218,7 +219,7 @@ void main(int argc, char** argv) {
 
     // Send back to father
     if ( my_rank !=0 ) { //not root
-        MPI_Send(C, curr_dim*curr_dim, MPI_INT, status.MPI_SOURCE, 1, MPI_COMM_WORLD);
+        MPI_Send(C, curr_dim*curr_dim, MPI_INT, father, 1, MPI_COMM_WORLD);
         
     
     } else { //root
