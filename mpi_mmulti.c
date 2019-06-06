@@ -59,7 +59,7 @@ void main(int argc, char** argv) {
 	int curr_dim;
 	
 	//Message buffer for the above numbers.
-	int div_buffer[5];
+	int div_buffer[5] = {0, 0, 0, 0, MATRIX_DIM};
 	
 	int half;
 	int child1, child2, child3, child4,
@@ -112,11 +112,11 @@ void main(int argc, char** argv) {
     
     
     if (curr_dim <= DELTA) { //conquer
-        printf("[%d]: curr_dim = %d. Conquering.\n", curr_dim, my_rank);
+        printf("[%d]: curr_dim = %d. Conquering.\n", my_rank, curr_dim);
         mmulti(A, B, div_buffer[0], div_buffer[1],
                div_buffer[2], div_buffer[3],
                C, curr_dim, MATRIX_DIM);
-        
+        printf("[%d]: mmulti done.\n", my_rank)
         
         
     } else { //divide
