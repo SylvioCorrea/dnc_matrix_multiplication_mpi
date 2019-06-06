@@ -1,5 +1,6 @@
-#include<stdlib.h>
-#include<stdio.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 void naive_multi(int *A, int *B, int *C, int size) {
     int i, j, k;
@@ -15,7 +16,7 @@ void naive_multi(int *A, int *B, int *C, int size) {
 
 void matrix_alloc(int **ptr, int size) {
     (*ptr) =  malloc(size*size*sizeof(int));
-    if(ptr==NULL) {
+    if((*ptr)==NULL) {
         printf("malloc failed!\n");
         exit(1);
     }
@@ -78,24 +79,24 @@ void mmulti(int *A, int *B,
         int a12 = A[al*size + ac+1];
         int a21 = A[(al+1)*size + ac];
         int a22 = A[(al+1)*size + ac+1];
-        printf("%d,%d\n%d,%d\n\n", a11, a12, a21, a22);
+        //printf("%d,%d\n%d,%d\n\n", a11, a12, a21, a22);
         
         printf("test2\n");
         int b11 = B[bl*size + bc];
         int b12 = B[bl*size + bc+1];
         int b21 = B[(bl+1)*size + bc];
         int b22 = B[(bl+1)*size + bc+1];
-        printf("%d,%d\n%d,%d\n\n", b11, b12, b21, b22);
+        //printf("%d,%d\n%d,%d\n\n", b11, b12, b21, b22);
         
         printf("test3\n");
         C[0] = a11*b11 + a12*b21;
-        printf("test4\n");
+        //printf("test4\n");
         C[1] = a11*b12 + a12*b22;
-        printf("test5\n");
+        //printf("test5\n");
         C[2] = a21*b11 + a22*b21;
-        printf("test6\n");
+        //printf("test6\n");
         C[3] = a21*b12 + a22*b22;
-        printf("test7\n");
+        //printf("test7\n");
         return;
     }
     printf("despair\n");
@@ -110,33 +111,33 @@ void mmulti(int *A, int *B,
     mmulti(A, B, al, ac, bl, bc, tempM1, half, size); //A11B11
     mmulti(A, B, al, ac+half, bl+half, bc, tempM2, half, size); //A12B21
     msum(tempM1, tempM2, C, 0, 0, half); //A11B11+A12B21=C11
-    printf("despair1\n");
+    //printf("despair1\n");
     
     mmulti(A, B, al, ac, bl, bc+half, tempM1, half, size); //A11B12
     mmulti(A, B, al, ac+half, bl+half, bc+half, tempM2, half, size); //A12B22
     msum(tempM1, tempM2, C, 0, half, half); //A11B12+A12B22=2C12
-    printf("despair2\n");
+    //printf("despair2\n");
     
     mmulti(A, B, al+half, ac, bl, bc, tempM1, half, size); //A21B11
     mmulti(A, B, al, ac+half, bl+half, bc, tempM2, half, size); //A12B21
     msum(tempM1, tempM2, C, half, 0, half); //A21B11+A22B21=2C21
-    printf("despair3\n");
+    //printf("despair3\n");
     
     mmulti(A, B, al+half, ac, bl, bc+half, tempM1, half, size); //A21B12
     mmulti(A, B, al+half, ac+half, bl+half, bc+half, tempM2, half, size); //A22B22
     msum(tempM1, tempM2, C, half, half, half); //A21B12+A22B22=2C22
-    printf("despair4\n");
+    //printf("despair4\n");
     
     free(tempM1);
     free(tempM2);
 }
 
-
+/*
 void main(int argc, char **argv) {
     int M1[] = { 1,  2,  3,  4,
-                5,  6,  7,  8,
-                9, 10, 11, 12,
-               13, 14, 15, 16};
+                 5,  6,  7,  8,
+                 9, 10, 11, 12,
+                13, 14, 15, 16};
     
     int m_size = 4;
     
@@ -204,3 +205,4 @@ void main(int argc, char **argv) {
     printf("\n");
     
 }
+*/
