@@ -116,7 +116,7 @@ void main(int argc, char** argv) {
         mmulti(A, B, div_buffer[0], div_buffer[1],
                div_buffer[2], div_buffer[3],
                C, curr_dim, MATRIX_DIM);
-        printf("[%d]: mmulti done.\n", my_rank)
+        printf("[%d]: mmulti done.\n", my_rank);
         
         
     } else { //divide
