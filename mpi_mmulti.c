@@ -19,7 +19,7 @@ implementation: 2^(TREE_HEIGHT) - 1
 #include "mmulti.h"
 
 //MATRIX_DIM **must** be a power of 2.
-#define MATRIX_DIM 4
+#define MATRIX_DIM 2
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
@@ -58,8 +58,13 @@ void main(int argc, char** argv) {
 	//Current dimensions of the matrices we are working with;
 	int curr_dim;
 	
+	//Message buffer for the above numbers.
+	int div_buffer[5];
+	
 	int half;
-	int father, child1, child2, child3, child4;
+	int child1, child2, child3, child4,
+	    child5, child6, child7, child8;
+	    
 	int i;
 	
 	int my_rank; //Process id.
@@ -76,16 +81,15 @@ void main(int argc, char** argv) {
         
         //div_buffer receives indexes for the submatrices of A and B of the division
         //and also the size of the submatrices dimensions (same dimensions for both).
-        int div_buffer[5];
         //Receive some division of the job
-        MPI_Recv(div_buffer, 5, MPI_INT, MPI_ANY_SOURCE, DIVISION, MPI_COMM_WORLD, &status);
-        father = status.MPI_SOURCE;
+        MPI_Recv(div_buffer, 5, MPI_INT, MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &status);
         al = div_buffer[0];
         ac = div_buffer[1];
         bl = div_buffer[2];
         bc = div_buffer[3];
         curr_dim = div_buffer[4];
-        printf("[%d] received from %d.\ncurr_dim = %d\n", my_rank, father, curr_dim);
+        
+        printf("[%d] received from %d.\ncurr_dim = %d\n", my_rank, status.MPI_SOURCE, curr_dim);
 
         
     } else { //root
