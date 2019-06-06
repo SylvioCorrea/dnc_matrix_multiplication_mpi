@@ -66,8 +66,8 @@ void main(int argc, char** argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
     
-    //matrix_init(A, MATRIX_DIM, 0);
-    //matrix_init(B, MATRIX_DIM, 2);
+    matrix_init(A, MATRIX_DIM, 0);
+    matrix_init(B, MATRIX_DIM, 2);
     
     printf("[%d]start\n", my_rank);
     
@@ -90,10 +90,10 @@ void main(int argc, char** argv) {
         printf("Dimensions of the matrices: %dx%d\n", MATRIX_DIM, MATRIX_DIM);
         printf("conquering point: %d\n", DELTA);
         printf("number of processes: %d\n\n", proc_n);
-        printf("matrix A:\n");
-        print_matrix(A, MATRIX_DIM);
-        printf("\nmatrix B:\n");
-        print_matrix(B, MATRIX_DIM);
+        //printf("matrix A:\n");
+        //print_matrix(A, MATRIX_DIM);
+        //printf("\nmatrix B:\n");
+        //print_matrix(B, MATRIX_DIM);
         
         curr_dim = MATRIX_DIM;
     }
