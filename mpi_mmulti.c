@@ -183,21 +183,21 @@ void main(int argc, char** argv) {
         
         //Divide the work
         MPI_Recv (A11B11, half*half, MPI_INT, child1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        printf("[%d] receives from child1.\n", my_rank);
+        printf("[%d] receives from child1[%d].\n", my_rank, child1);
         MPI_Recv (A12B21, half*half, MPI_INT, child2, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        printf("[%d] receives from child2.\n", my_rank);
+        printf("[%d] receives from child2[%d].\n", my_rank, child2);
         MPI_Recv (A11B12, half*half, MPI_INT, child3, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        printf("[%d] receives from child3.\n", my_rank);
+        printf("[%d] receives from child3[%d].\n", my_rank, child3);
         MPI_Recv (A12B22, half*half, MPI_INT, child4, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        printf("[%d] receives from child4.\n", my_rank);
+        printf("[%d] receives from child4[%d].\n", my_rank, child4);
         MPI_Recv (A21B11, half*half, MPI_INT, child5, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        printf("[%d] receives from child5.\n", my_rank);
+        printf("[%d] receives from child5[%d].\n", my_rank, child5);
         MPI_Recv (A22B21, half*half, MPI_INT, child6, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        printf("[%d] receives from child6.\n", my_rank);
+        printf("[%d] receives from child6[%d].\n", my_rank, child6);
         MPI_Recv (A21B12, half*half, MPI_INT, child7, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        printf("[%d] receives from child7.\n", my_rank);
+        printf("[%d] receives from child7[%d].\n", my_rank, child7);
         MPI_Recv (A22B22, half*half, MPI_INT, child8, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        printf("[%d] receives from child8.\n", my_rank);
+        printf("[%d] receives from child8[%d].\n", my_rank, child8);
         
         //Time to sum the multiplication results. Each sum will be stored in
         //one quarter of the result matrix C.
