@@ -108,12 +108,11 @@ void main(int argc, char** argv) {
     
     
     //Now that curr_dim is known we can allocate C.
-    matrix_alloc(C, curr_dim);
+    matrix_alloc(&C, curr_dim);
     
     
     if (curr_dim <= DELTA) { //conquer
         printf("[%d]: curr_dim = %d. Conquering.\n", curr_dim, my_rank);
-        matrix_alloc(C, curr_dim);
         mmulti(A, B, div_buffer[0], div_buffer[1],
                div_buffer[2], div_buffer[3],
                C, curr_dim, MATRIX_DIM);
@@ -172,20 +171,14 @@ void main(int argc, char** argv) {
         int *A21B12;
         int *A22B22;
         
-        //One extra matrix will store the final results
-        //of the sums of the above multiplications
-        int *C;
-        
-        matrix_alloc(A11B11, half);
-        matrix_alloc(A12B21, half);
-        matrix_alloc(A11B12, half);
-        matrix_alloc(A12B22, half);
-        matrix_alloc(A21B11, half);
-        matrix_alloc(A22B21, half);
-        matrix_alloc(A21B12, half);
-        matrix_alloc(A22B22, half);
-        
-        matrix_alloc(C, curr_dim);
+        matrix_alloc(&A11B11, half);
+        matrix_alloc(&A12B21, half);
+        matrix_alloc(&A11B12, half);
+        matrix_alloc(&A12B22, half);
+        matrix_alloc(&A21B11, half);
+        matrix_alloc(&A22B21, half);
+        matrix_alloc(&A21B12, half);
+        matrix_alloc(&A22B22, half);
         
         //Divide the work
         MPI_Recv (A11B11, half*half, MPI_INT, child1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
