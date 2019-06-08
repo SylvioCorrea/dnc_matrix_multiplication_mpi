@@ -28,5 +28,5 @@ void main() {
     
     t2 = clock();
     printf("Multiplication done.\n");
-    printf("Time taken: %f seconds\n", (double)t2-t1);
+    printf("Time taken: %f seconds\n", (double)(t2-t1));
 }
