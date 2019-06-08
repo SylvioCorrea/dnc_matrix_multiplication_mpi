@@ -1,2 +1,2 @@
 git pull
-ladcomp -env mpicc *.c -o mpi_mmulti
+ladcomp -env mpicc mpi_mmulti.c mmulti.c -o mpi_mmulti
