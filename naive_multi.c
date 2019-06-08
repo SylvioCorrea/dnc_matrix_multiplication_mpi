@@ -12,7 +12,7 @@ void main() {
     int *B;
     int *C;
     
-    clock_t t1,t2;
+    clock_t t;
     
     matrix_alloc(&A, MATRIX_DIM);
     matrix_alloc(&B, MATRIX_DIM);
@@ -22,11 +22,11 @@ void main() {
     matrix_init(B, MATRIX_DIM, 2);
     
     printf("Multiplication start.\n");
-    t1 = clock();
+    t = clock();
     
     naive_multi(A, B, C, MATRIX_DIM);
     
-    t2 = clock();
+    t = clock() - t;
     printf("Multiplication done.\n");
-    printf("Time taken: %f seconds\n", (double)(t2-t1));
+    printf("Time taken: %f seconds\n", ((double)t)/CLOCKS_PER_SEC);
 }
