@@ -4,7 +4,7 @@
 #include <time.h>
 #include "mmulti.h"
 
-#define MATRIX_DIM (2<<12)
+#define MATRIX_DIM (1<<12)
 
 void main() {
     printf("Program start.\n");
