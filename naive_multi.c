@@ -4,10 +4,11 @@
 #include <time.h>
 #include "mmulti.h"
 
-#define MATRIX_DIM (2<<10)
+#define MATRIX_DIM (2<<12)
 
 void main() {
     printf("Program start.\n");
+    printf("Multiplication of 2 %dx%d matrices.\n", MATRIX_DIM, MATRIX_DIM);
     int *A;
     int *B;
     int *C;
@@ -28,5 +29,5 @@ void main() {
     
     t = clock() - t;
     printf("Multiplication done.\n");
-    printf("Time taken: %f seconds\n", ((double)t)/CLOCKS_PER_SEC);
+    printf("Time taken: %.2f seconds\n", ((double)t)/CLOCKS_PER_SEC);
 }
