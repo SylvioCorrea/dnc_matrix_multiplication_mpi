@@ -58,6 +58,9 @@ void main(int argc, char** argv) {
 	int child1, child2, child3, child4,
 	    child5, child6, child7, child8;
 	    
+	//For execution time measuring.
+	double t1, t2;
+	
 	int i;
 	
 	int my_rank; //Process id.
@@ -97,6 +100,7 @@ void main(int argc, char** argv) {
         //print_matrix(B, MATRIX_DIM);
         
         curr_dim = MATRIX_DIM;
+        t1 = MPI_Wtime();
     }
     
     
@@ -216,6 +220,8 @@ void main(int argc, char** argv) {
     } else { //root
         //printf("Root results:\n");
         //print_matrix(C, curr_dim);
+        t2 = MPI_Wtime();
+        printf("Multiplication done. Time taken: %.2f seconds", t2-t1);
     }
     
     free(C);
