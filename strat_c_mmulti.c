@@ -32,7 +32,7 @@ Examples:
 
 //This number defines how many divisions should be
 //performed before conquering.
-#define N_OF_DIVISIONS 1
+#define N_OF_DIVISIONS 0
 
 //Number of lines/colums of matrices being multiplied.
 #define MATRIX_DIM (1<<MATRIX_DIM_EXP)
