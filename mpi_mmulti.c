@@ -6,14 +6,14 @@
 
 //MATRIX_DIM **must** be a power of 2. 2 is the minimum.
 //Notice 1<<x = 2^x
-#define MATRIX_DIM (1<<10)
+#define MATRIX_DIM (1<<11)
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
 //a power of 2. Must be equal to MATRIX_DIM/(2^(h-1))
 //where h is the height of the tree.
 //2 is the minimum value.
-#define DELTA (1<<10)
+#define DELTA (1<<11)
 
 
 void main(int argc, char** argv) {
