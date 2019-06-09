@@ -248,14 +248,15 @@ void main(int argc, char** argv) {
         //Receive some division of the job
         MPI_Recv(&rec_str, sizeof(recursion_struct), MPI_BYTE, MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &status);
         father = status.MPI_SOURCE;
-        printf("[%d] received from %d. curr_dim = %d\n", my_rank, father, curr_dim);
+        printf("[%d] received from %d. Current dimensions of the matrices = %d\n",
+               my_rank, father, rec_str.dim);
         
         
         
     } else { //root
         printf("Dimensions of the matrices: %dx%d\n", MATRIX_DIM, MATRIX_DIM);
         printf("Conquering point: %d\n", DELTA);
-        printf("Number of consecutive divisions to be performed before conquering: %d", N_OF_DIVISIONS);
+        printf("Number of consecutive divisions to be performed before conquering: %d.\n", N_OF_DIVISIONS);
         printf("number of processes: %d\n\n", proc_n);
         //printf("matrix A:\n");
         //print_matrix(A, MATRIX_DIM);
