@@ -1,1 +1,1 @@
-ladcomp -env strat_c_mmulti.c mmulti.c -o strat_c_mmulti
+ladcomp -env mpicc strat_c_mmulti.c mmulti.c -o strat_c_mmulti
