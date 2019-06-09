@@ -28,7 +28,7 @@ Examples:
 
 //Dimensions of matrices being multiplied
 //will be 2^MATRIX_DIM_EXP.
-#define MATRIX_DIM_EXP 13
+#define MATRIX_DIM_EXP 3
 
 //This number defines how many divisions should be
 //performed before conquering.
@@ -234,7 +234,8 @@ void main(int argc, char** argv) {
         
     } else { //root
         printf("Dimensions of the matrices: %dx%d\n", MATRIX_DIM, MATRIX_DIM);
-        printf("conquering point: %d\n", DELTA);
+        printf("Conquering point: %d\n", DELTA);
+        printf("Number of consecutive divisions to be performed before conquering: %d", N_OF_DIVISIONS);
         printf("number of processes: %d\n\n", proc_n);
         //printf("matrix A:\n");
         //print_matrix(A, MATRIX_DIM);
