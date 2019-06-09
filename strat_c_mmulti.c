@@ -63,6 +63,12 @@ int *B;
 
 
 
+void print_rec_str(recursion_struct *rec_str) {
+    printf("al: %d, ac: %d, bl: %d, bc: %d\ndim: %d, division_n: %d\n\n",
+           rec_str->al, rec_str->ac, rec_str->bl, rec_str->bc,
+           rec_str->dim, rec_str->division_n);
+}
+
 //Recursive function executed by every process.
 //Implements the divide and conquer method of matrix multiplication,
 //but ensures one of the eight pieces of the division stays with the dividing process.
@@ -251,6 +257,7 @@ void main(int argc, char** argv) {
         father = status.MPI_SOURCE;
         printf("[%d] received from %d. Current dimensions of the matrices = %d\n",
                my_rank, father, rec_str.dim);
+        print_rec_str(&rec_str);
         C_dim = rec_str.dim;
         
     } else { //root
