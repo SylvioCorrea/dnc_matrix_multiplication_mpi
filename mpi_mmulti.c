@@ -1,19 +1,40 @@
+//Example use:
+//ladrun -np 73 mpi_mmulti
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "mpi.h"
 #include "mmulti.h"
 
-//MATRIX_DIM **must** be a power of 2. 2 is the minimum.
-//Notice 1<<x = 2^x
-#define MATRIX_DIM (1<<13)
+/*
+The computation tree of this divide and conquer strategy has
+branching factor 8. The computation tree will have height equal
+to the number of divisions needed + 1. The program requires this
+tree to be full, that is, the number of processes must be equal
+to sum(8^k), 0<=k<=tree height.
 
-//Once division makes matrices of dimensions DELTA,
-//the receiving process must conquer. Must also be
-//a power of 2. Must be equal to MATRIX_DIM/(2^(h-1))
-//where h is the height of the tree.
-//2 is the minimum value.
-#define DELTA (1<<10)
+Examples:
+    height  divisions   required number of processes
+    1       0           1
+    2       1           9
+    3       2           73
+    4       3           585
+*/
+
+//Dimensions of matrices being multiplied
+//will be 2^MATRIX_DIM_EXP.
+#define MATRIX_DIM_EXP 13
+
+//This number defines how many divisions should be
+//performed before conquering.
+#define N_OF_DIVISIONS 3
+
+//Number of lines/colums of matrices being multiplied.
+#define MATRIX_DIM (1<<MATRIX_DIM_EXP)
+
+//Matrices with this number of lines/colums should be conquered
+#define DELTA (1<<(MATRIX_DIM_EXP - N_OF_DIVISIONS))
 
 
 void main(int argc, char** argv) {
@@ -21,8 +42,6 @@ void main(int argc, char** argv) {
     //A and B are square matrices of same size
     int *A;
     int *B;
-    matrix_alloc(&A, MATRIX_DIM);
-    matrix_alloc(&B, MATRIX_DIM);
     
     //C points to the resulting matrix
     int *C;
@@ -58,6 +77,29 @@ void main(int argc, char** argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
     
+    
+    //===========================================
+    //Test if the number of processes is correct
+    int required_procs = 0;
+    for(i=0; i<N_OF_DIVISIONS; i++) {
+        require_procs += simple_pow(8, i);
+    }
+    if( proc_n != required_procs ) {
+        if(my_rank == 0) {
+            int req_procs = 
+            printf("Error. required number of processes to perform %d divisions is %d.\n",
+                   N_OF_DIVISIONS, required_procs);
+            printf("Number of processes given by the user: %d\n.", proc_n);
+            printf("Aborting.\n");
+        }
+        exit(1);
+    }
+    //============================================
+    //Test passed
+    
+    
+    matrix_alloc(&A, MATRIX_DIM);
+    matrix_alloc(&B, MATRIX_DIM);
     matrix_init(A, MATRIX_DIM, 0);
     matrix_init(B, MATRIX_DIM, 2);
     
@@ -68,6 +110,7 @@ void main(int argc, char** argv) {
         //div_buffer receives indexes for the submatrices of A and B of the division
         //and also the size of the submatrices dimensions (same dimensions for both).
         //Receive some division of the job
+        
         MPI_Recv(div_buffer, 5, MPI_INT, MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &status);
         al = div_buffer[0];
         ac = div_buffer[1];
@@ -81,6 +124,7 @@ void main(int argc, char** argv) {
     } else { //root
         printf("Dimensions of the matrices: %dx%d\n", MATRIX_DIM, MATRIX_DIM);
         printf("conquering point: %d\n", DELTA);
+        printf("Number of consecutive divisions to be performed before conquering: %d", N_OF_DIVISIONS);
         printf("number of processes: %d\n\n", proc_n);
         //printf("matrix A:\n");
         //print_matrix(A, MATRIX_DIM);

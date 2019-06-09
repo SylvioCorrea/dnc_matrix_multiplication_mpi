@@ -21,13 +21,6 @@ MPI_Status status;
 int *A;
 int *B;
 
-int simple_pow(int b, int p) {
-    int i;
-    int res = 1;
-    for(i=0; i<p; i++, res*=b) {}
-    return res;
-}
-
 void process_recursion(recursion_struct *rec_ptr, int *C) {
     
     if(curr_dim <= DELTA) { //conquer

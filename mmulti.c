@@ -80,6 +80,14 @@ node of the recursion tree.
 size = size*size are the original dimensions of both A and B. Is used to 
 correctly traverse the original matrices lines during the recursion.
 */
+
+int simple_pow(int b, int p) {
+    int i;
+    int res = 1;
+    for(i=0; i<p; i++, res*=b) {}
+    return res;
+}
+
 void mmulti(int *A, int *B,
             int al, int ac,
             int bl, int bc,

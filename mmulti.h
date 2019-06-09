@@ -12,6 +12,7 @@ typedef struct {
     int division_n;
 } recursion_struct;
 
+int simple_pow(int b, int p);
 void matrix_init(int *M, int size, int offset);
 void naive_multi(int *A, int *B, int *C, int size);
 void matrix_alloc(int **ptr, int size);
