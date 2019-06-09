@@ -82,7 +82,7 @@ void main(int argc, char** argv) {
     //Test if the number of processes is correct
     int required_procs = 0;
     for(i=0; i<N_OF_DIVISIONS; i++) {
-        require_procs += simple_pow(8, i);
+        required_procs += simple_pow(8, i);
     }
     if( proc_n != required_procs ) {
         if(my_rank == 0) {
