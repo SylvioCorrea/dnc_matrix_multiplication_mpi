@@ -197,8 +197,8 @@ void main(int argc, char** argv) {
 	int al, ac, bl, bc;
 	al = ac = bl = bc = 0;
 	
-	//Current dimensions of the matrices we are working with;
-	int curr_dim;
+	//Dimensions of the resulting matrix to be returned to father processes.
+	int C_dim;
 	
 	//Message buffer for the above numbers.
 	recursion_struct rec_str;
@@ -251,8 +251,7 @@ void main(int argc, char** argv) {
         father = status.MPI_SOURCE;
         printf("[%d] received from %d. Current dimensions of the matrices = %d\n",
                my_rank, father, rec_str.dim);
-        
-        
+        C_dim = rec_str.dim;
         
     } else { //root
         printf("Dimensions of the matrices: %dx%d\n", MATRIX_DIM, MATRIX_DIM);
@@ -269,6 +268,7 @@ void main(int argc, char** argv) {
         rec_str.bc = 0;
         rec_str.dim = MATRIX_DIM;
         rec_str.division_n = 0;
+        C_dim = MATRIX_DIM;
         t1 = MPI_Wtime();
     }
     
@@ -276,14 +276,14 @@ void main(int argc, char** argv) {
     
     //Start computation.
     //Allocate matrix to hold results.
-    matrix_alloc(&C, rec_str.dim);
+    matrix_alloc(&C, C_dim);
     process_recursion(&rec_str, C);
     
     
     
     if(my_rank!=0) { //not-root
         //Non-root nodes still need to send back their results
-        MPI_Send(C, MATRIX_DIM*MATRIX_DIM, MPI_INT, father, 1, MPI_COMM_WORLD);
+        MPI_Send(C, C_dim*C_dim, MPI_INT, father, 1, MPI_COMM_WORLD);
         
     } else { //root
         t2 = MPI_Wtime();
