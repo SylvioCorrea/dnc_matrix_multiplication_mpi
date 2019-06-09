@@ -40,12 +40,32 @@ Examples:
 //Matrices with this number of lines/colums should be conquered
 #define DELTA (1<<(MATRIX_DIM_EXP - N_OF_DIVISIONS))
 
+
+//====================================================================
+//Struct used to keep track of important variables of the submatrices being worked on
+//during the the recursive computation in the function process_recursion()
+typedef struct {
+    int al; //Row of the top left element of the current submatrix of A
+    int ac; //Colum of the top left element of the current submatrix of A
+    int bl; //Row of the top left element of the current submatrix of B
+    int bc; //Colum of the top left element of the current submatrix of B
+    int dim; //Number of rows/colums of the current submatrices
+    int division_n; //How many divisions have already ocurred at this point
+} recursion_struct;
+//====================================================================
+
+
 int my_rank;
 int proc_n;
 MPI_Status status;
 int *A;
 int *B;
 
+
+
+//Recursive function executed by every process.
+//Implements the divide and conquer method of matrix multiplication,
+//but ensures one of the eight pieces of the division stays with the dividing process.
 void process_recursion(recursion_struct *rec_ptr, int *C) {
     
     if(rec_ptr->dim <= DELTA) { //conquer
@@ -61,7 +81,7 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     
     printf("[%d] dividing\n", my_rank);
     
-    int half = curr_dim/2;
+    int half = rec_ptr->dim/2;
     int new_division = rec_ptr->division_n + 1;
     int i;
     int sum = 0;

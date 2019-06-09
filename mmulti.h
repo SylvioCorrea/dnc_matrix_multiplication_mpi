@@ -3,14 +3,7 @@
 #include <string.h>
 #include "mpi.h"
 
-typedef struct {
-    int al;
-    int ac;
-    int bl;
-    int bc;
-    int dim;
-    int division_n;
-} recursion_struct;
+
 
 int simple_pow(int b, int p);
 void matrix_init(int *M, int size, int offset);
