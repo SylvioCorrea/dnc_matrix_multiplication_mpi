@@ -74,7 +74,7 @@ bl bc = line and colum indicating the top left element of the submatrix of B
 in the recursion.
 C = pointer to the matrix of size s where results of this recursion will be 
 stored.
-s = size of the submatrixes of A and B at this point in the recursion. Also 
+s = size of the submatrices of A and B at this point in the recursion. Also 
 the whole size of the result matrix C which was allocated in the previous 
 node of the recursion tree.
 size = size*size are the original dimensions of both A and B. Is used to 

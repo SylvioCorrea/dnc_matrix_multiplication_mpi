@@ -1,15 +1,3 @@
-/*
-Modelos:
-A: divisao e conquista pura. No máximo um processo por core
-    (ou 16 por nodo com hyperthread).
-B: inflar propositalmente o número de processos para mais
-    de um por core. O SO vai fazer o balanceamento de carga
-    ao deixar os processos menos trabalhosos em espera
-C: modelo do artigo onde o pai divide o trabalho com ele
-    mesmo mais um filho
-
-*/
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -18,7 +6,7 @@ C: modelo do artigo onde o pai divide o trabalho com ele
 
 //MATRIX_DIM **must** be a power of 2. 2 is the minimum.
 //Notice 1<<x = 2^x
-#define MATRIX_DIM (1<<12)
+#define MATRIX_DIM (1<<10)
 
 //Once division makes matrices of dimensions DELTA,
 //the receiving process must conquer. Must also be
@@ -177,7 +165,7 @@ void main(int argc, char** argv) {
         matrix_alloc(&A21B12, half);
         matrix_alloc(&A22B22, half);
         
-        //Divide the work
+        //Receive the results
         MPI_Recv (A11B11, half*half, MPI_INT, child1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         printf("[%d] receives from child1[%d].\n", my_rank, child1);
         MPI_Recv (A12B21, half*half, MPI_INT, child2, MPI_ANY_TAG, MPI_COMM_WORLD, &status);

@@ -1,10 +1,12 @@
+//13750.69 seconds for matrix_dim 8192
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include "mmulti.h"
 
-#define MATRIX_DIM (1<<12)
+#define MATRIX_DIM (1<<10)
 
 void main() {
     printf("Program start.\n");
