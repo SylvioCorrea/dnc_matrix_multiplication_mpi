@@ -4,6 +4,20 @@ keeps one unity of the divided job for itself to compute, sending the other
 pieces to different processes. This prevents subutilization of hardware where
 some processes sit idle most of the time waiting for processes further down
 on the computation tree to finish their jobs before joining their results.
+
+The computation tree of this divide and conquer strategy has
+branching factor 7. The computation tree will have height equal
+to the number of divisions needed + 1. The program requires this
+tree to be full, that is, the number of processes must be equal
+to sum(7^k), 0<=k<=tree height.
+
+Examples:
+    height  divisions   required number of processes
+    1       0           1
+    2       1           8
+    3       2           57
+    4       3           400
+
 */
 
 #include <stdlib.h>
@@ -12,8 +26,19 @@ on the computation tree to finish their jobs before joining their results.
 #include "mpi.h"
 #include "mmulti.h"
 
-#define MATRIX_DIM (1<<10)
-#define DELTA (1<<8)
+//Dimensions of matrices being multiplied
+//will be 2^MATRIX_DIM_EXP.
+#define MATRIX_DIM_EXP 13
+
+//This number defines how many divisions should be
+//performed before conquering.
+#define N_OF_DIVISIONS 2
+
+//Number of lines/colums of matrices being multiplied.
+#define MATRIX_DIM (1<<MATRIX_DIM_EXP)
+
+//Matrices with this number of lines/colums should be conquered
+#define DELTA (1<<(MATRIX_DIM_EXP - N_OF_DIVISIONS))
 
 int my_rank;
 int proc_n;
@@ -23,7 +48,7 @@ int *B;
 
 void process_recursion(recursion_struct *rec_ptr, int *C) {
     
-    if(curr_dim <= DELTA) { //conquer
+    if(rec_ptr->dim <= DELTA) { //conquer
         mmulti(A, B,
                rec_ptr->al, rec_ptr->ac,
                rec_ptr->bl, rec_ptr->bc,
@@ -38,13 +63,12 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     
     int half = curr_dim/2;
     int new_division = rec_ptr->division_n + 1;
-    int father = status_ptr->MPI_SOURCE;
     int i;
     int sum = 0;
     //First children of the recursion can be calculated as
     //summation(7^k) + myrank*7, where 0<=k<=current number
     //of divides already performed at this point.
-    for(i=0; i < control_ptr->division_n; i++) {
+    for(i=0; i < rec_ptr->division_n; i++) {
         sum += simple_pow(7, i);
     }
     int child1 = sum + my_rank*7;
@@ -54,6 +78,11 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     int child5 = child4+1;
     int child6 = child5+1;
     int child7 = child6+1;
+    
+    int al = rec_ptr->al;
+    int ac = rec_ptr->ac;
+    int bl = rec_ptr->bl;
+    int bc = rec_ptr->bc;
     
     recursion_struct A11B11_buffer = {al,      ac,      bl,      bc,      half, new_division};
     recursion_struct A12B21_buffer = {al,      ac+half, bl+half, bc,      half, new_division};
@@ -65,13 +94,13 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     recursion_struct A22B22_buffer = {al+half, ac+half, bl+half, bc+half, half, new_division};
     
     //Sending jobs to other processes
-    MPI_Send (A12B21_buffer, sizeof(recursion_struct), MPI_BYTE, child1, 1, MPI_COMM_WORLD);
-    MPI_Send (A11B12_buffer, sizeof(recursion_struct), MPI_BYTE, child2, 1, MPI_COMM_WORLD);
-    MPI_Send (A12B22_buffer, sizeof(recursion_struct), MPI_BYTE, child3, 1, MPI_COMM_WORLD);
-    MPI_Send (A21B11_buffer, sizeof(recursion_struct), MPI_BYTE, child4, 1, MPI_COMM_WORLD);
-    MPI_Send (A22B21_buffer, sizeof(recursion_struct), MPI_BYTE, child5, 1, MPI_COMM_WORLD);
-    MPI_Send (A21B12_buffer, sizeof(recursion_struct), MPI_BYTE, child6, 1, MPI_COMM_WORLD);
-    MPI_Send (A22B22_buffer, sizeof(recursion_struct), MPI_BYTE, child7, 1, MPI_COMM_WORLD);
+    MPI_Send (&A12B21_buffer, sizeof(recursion_struct), MPI_BYTE, child1, 1, MPI_COMM_WORLD);
+    MPI_Send (&A11B12_buffer, sizeof(recursion_struct), MPI_BYTE, child2, 1, MPI_COMM_WORLD);
+    MPI_Send (&A12B22_buffer, sizeof(recursion_struct), MPI_BYTE, child3, 1, MPI_COMM_WORLD);
+    MPI_Send (&A21B11_buffer, sizeof(recursion_struct), MPI_BYTE, child4, 1, MPI_COMM_WORLD);
+    MPI_Send (&A22B21_buffer, sizeof(recursion_struct), MPI_BYTE, child5, 1, MPI_COMM_WORLD);
+    MPI_Send (&A21B12_buffer, sizeof(recursion_struct), MPI_BYTE, child6, 1, MPI_COMM_WORLD);
+    MPI_Send (&A22B22_buffer, sizeof(recursion_struct), MPI_BYTE, child7, 1, MPI_COMM_WORLD);
     
     //The process still needs to take care of its own multiplication before joining results.
     //Lets allocate the matrices that will hold the results to be summed;
@@ -94,22 +123,22 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     matrix_alloc(&A22B22, half);
     
     //The recursion will give us A11B11.
-    process_recursion(A, B, &A11B11_buffer, A11B11, status_ptr);
+    process_recursion(&A11B11_buffer, A11B11);
     //The other processes will give us all other matrices.
-    MPI_Recv (A12B21, half*half, MPI_INT, child2, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child2[%d].\n", my_rank, child1);
-    MPI_Recv (A11B12, half*half, MPI_INT, child3, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child3[%d].\n", my_rank, child2);
-    MPI_Recv (A12B22, half*half, MPI_INT, child4, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child4[%d].\n", my_rank, child3);
-    MPI_Recv (A21B11, half*half, MPI_INT, child5, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child5[%d].\n", my_rank, child4);
-    MPI_Recv (A22B21, half*half, MPI_INT, child6, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child6[%d].\n", my_rank, child5);
-    MPI_Recv (A21B12, half*half, MPI_INT, child7, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child7[%d].\n", my_rank, child6);
-    MPI_Recv (A22B22, half*half, MPI_INT, child8, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child8[%d].\n", my_rank, child7);
+    MPI_Recv (A12B21, half*half, MPI_INT, child1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    printf("[%d] receives from child1[%d].\n", my_rank, child1);
+    MPI_Recv (A11B12, half*half, MPI_INT, child2, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    printf("[%d] receives from child2[%d].\n", my_rank, child2);
+    MPI_Recv (A12B22, half*half, MPI_INT, child3, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    printf("[%d] receives from child3[%d].\n", my_rank, child3);
+    MPI_Recv (A21B11, half*half, MPI_INT, child4, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    printf("[%d] receives from child4[%d].\n", my_rank, child4);
+    MPI_Recv (A22B21, half*half, MPI_INT, child5, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    printf("[%d] receives from child5[%d].\n", my_rank, child5);
+    MPI_Recv (A21B12, half*half, MPI_INT, child6, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    printf("[%d] receives from child6[%d].\n", my_rank, child6);
+    MPI_Recv (A22B22, half*half, MPI_INT, child7, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    printf("[%d] receives from child7[%d].\n", my_rank, child7);
     
     //Time to sum the multiplication results. Each sum will be stored in
     //one quarter of the result matrix C.
@@ -166,6 +195,27 @@ void main(int argc, char** argv) {
     MPI_Init(&argc , &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
+    
+    
+    //===========================================
+    //Test if the number of processes is correct
+    int required_procs = 0;
+    for(i=0; i<=N_OF_DIVISIONS; i++) {
+        required_procs += simple_pow(7, i);
+    }
+    if( proc_n != required_procs ) {
+        if(my_rank == 0) {
+            int req_procs = 
+            printf("Error. required number of processes to perform %d divisions is %d.\n",
+                   N_OF_DIVISIONS, required_procs);
+            printf("Number of processes given by the user: %d.\n", proc_n);
+            printf("Aborting.\n");
+        }
+        exit(1);
+    }
+    //============================================
+    //Test passed
+    
     
     matrix_init(A, MATRIX_DIM, 0);
     matrix_init(B, MATRIX_DIM, 2);
