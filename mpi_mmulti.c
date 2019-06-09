@@ -13,7 +13,7 @@
 //a power of 2. Must be equal to MATRIX_DIM/(2^(h-1))
 //where h is the height of the tree.
 //2 is the minimum value.
-#define DELTA (1<<13)
+#define DELTA (1<<11)
 
 
 void main(int argc, char** argv) {
