@@ -287,11 +287,13 @@ void main(int argc, char** argv) {
         
     } else { //root
         t2 = MPI_Wtime();
+        print_matrix(C, MATRIX_DIM);
         printf("Time taken: %.2f\n", t2-t1);
     }
     
     free(C);
     
-    printf("[]done.\n", my_rank);
+    printf("[%d]done.\n", my_rank);
     
+    MPI_Finalize();
 }
