@@ -291,7 +291,7 @@ void main(int argc, char** argv) {
     
     if(my_rank!=0) { //not-root
         //Non-root nodes still need to send back their results
-        printf("[%d]Sending back matrices of dim %d\n", myrank, C_dim);
+        printf("[%d]Sending back matrices of dim %d\n", my_rank, C_dim);
         MPI_Send(C, C_dim*C_dim, MPI_INT, father, 1, MPI_COMM_WORLD);
         
     } else { //root
