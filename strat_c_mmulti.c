@@ -28,11 +28,11 @@ Examples:
 
 //Dimensions of matrices being multiplied
 //will be 2^MATRIX_DIM_EXP.
-#define MATRIX_DIM_EXP 1
+#define MATRIX_DIM_EXP 2
 
 //This number defines how many divisions should be
 //performed before conquering.
-#define N_OF_DIVISIONS 0
+#define N_OF_DIVISIONS 1
 
 //Number of lines/colums of matrices being multiplied.
 #define MATRIX_DIM (1<<MATRIX_DIM_EXP)
@@ -69,7 +69,7 @@ int *B;
 void process_recursion(recursion_struct *rec_ptr, int *C) {
     
     if(rec_ptr->dim <= DELTA) { //conquer
-        printf("[%d] conquering.", my_rank);
+        printf("[%d] conquering.\n", my_rank);
         mmulti(A, B,
                rec_ptr->al, rec_ptr->ac,
                rec_ptr->bl, rec_ptr->bc,
