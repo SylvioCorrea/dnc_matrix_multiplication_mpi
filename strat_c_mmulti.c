@@ -95,7 +95,7 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     //First children of the recursion can be calculated as
     //summation(7^k) + myrank*7, where 0<=k<=current number
     //of divides already performed at this point.
-    for(i=0; i < rec_ptr->division_n; i++) {
+    for(i=0; i <= rec_ptr->division_n; i++) {
         sum += simple_pow(7, i);
     }
     int child1 = sum + my_rank*7;
@@ -157,7 +157,7 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     process_recursion(&A11B11_buffer, A11B11);
     //The other processes will give us all other matrices.
     return;
-    printf("[%d]Expecting matrices of dim %d\n", my_rank, half);
+    //printf("[%d]Expecting matrices of dim %d\n", my_rank, half);
     MPI_Recv (A12B21, half*half, MPI_INT, child1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
     printf("[%d] receives from child1[%d].\n", my_rank, child1);
     MPI_Recv (A11B12, half*half, MPI_INT, child2, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
@@ -296,8 +296,8 @@ void main(int argc, char** argv) {
     
     if(my_rank!=0) { //not-root
         //Non-root nodes still need to send back their results
-        printf("[%d]Sending back matrix of dim %d\n", my_rank, C_dim);
-        print_matrix(C, C_dim);
+        //printf("[%d]Sending back matrix of dim %d\n", my_rank, C_dim);
+        //print_matrix(C, C_dim);
         MPI_Send(C, C_dim*C_dim, MPI_INT, father, 1, MPI_COMM_WORLD);
         
     } else { //root
