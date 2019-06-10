@@ -28,11 +28,11 @@ Examples:
 
 //Dimensions of matrices being multiplied
 //will be 2^MATRIX_DIM_EXP.
-#define MATRIX_DIM_EXP 2
+#define MATRIX_DIM_EXP 3
 
 //This number defines how many divisions should be
 //performed before conquering.
-#define N_OF_DIVISIONS 1
+#define N_OF_DIVISIONS 2
 
 //Number of lines/colums of matrices being multiplied.
 #define MATRIX_DIM (1<<MATRIX_DIM_EXP)
