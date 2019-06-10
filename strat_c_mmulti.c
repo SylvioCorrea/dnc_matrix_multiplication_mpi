@@ -65,6 +65,7 @@ void print_rec_str(recursion_struct *rec_str) {
 
 //Calculates the number of required processes to perform
 //N_OF_DIVISIONS using this algorithm.
+int required_procs_aux(int n);
 int required_procs() {
     return required_procs_aux(N_OF_DIVISIONS);
 }
@@ -242,8 +243,8 @@ void main(int argc, char** argv) {
     
     //===========================================
     //Test if the number of processes is correct
-    int required_procs = required_procs();
-    if( proc_n != required_procs ) {
+    int p = required_procs();
+    if( proc_n != p ) {
         if(my_rank == 0) {
             int req_procs = 
             printf("Error. required number of processes to perform %d divisions is %d.\n",
