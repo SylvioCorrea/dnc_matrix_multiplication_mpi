@@ -22,7 +22,7 @@ procs(n){
 
 //Dimensions of matrices being multiplied
 //will be 2^MATRIX_DIM_EXP.
-#define MATRIX_DIM_EXP 3
+#define MATRIX_DIM_EXP 13
 
 //This number defines how many divisions should be
 //performed before conquering.
@@ -132,7 +132,7 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     recursion_struct A21B12_buffer = {al+half, ac,      bl,      bc+half, half, new_division};
     recursion_struct A22B22_buffer = {al+half, ac+half, bl+half, bc+half, half, new_division};
     
-    printf("[%d]: children: %d, %d, %d, %d, %d, %d, %d\n",
+    //printf("[%d]: children: %d, %d, %d, %d, %d, %d, %d\n",
            my_rank, child1, child2, child3, child4, child5, child6, child7);
     
     //Sending jobs to other processes
@@ -170,19 +170,19 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     //The other processes will give us all other matrices.
     //printf("[%d]Expecting matrices of dim %d\n", my_rank, half);
     MPI_Recv (A12B21, half*half, MPI_INT, child1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child1[%d].\n", my_rank, child1);
+    //printf("[%d] receives from child1[%d].\n", my_rank, child1);
     MPI_Recv (A11B12, half*half, MPI_INT, child2, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child2[%d].\n", my_rank, child2);
+    //printf("[%d] receives from child2[%d].\n", my_rank, child2);
     MPI_Recv (A12B22, half*half, MPI_INT, child3, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child3[%d].\n", my_rank, child3);
+    //printf("[%d] receives from child3[%d].\n", my_rank, child3);
     MPI_Recv (A21B11, half*half, MPI_INT, child4, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child4[%d].\n", my_rank, child4);
+    //printf("[%d] receives from child4[%d].\n", my_rank, child4);
     MPI_Recv (A22B21, half*half, MPI_INT, child5, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child5[%d].\n", my_rank, child5);
+    //printf("[%d] receives from child5[%d].\n", my_rank, child5);
     MPI_Recv (A21B12, half*half, MPI_INT, child6, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child6[%d].\n", my_rank, child6);
+    //printf("[%d] receives from child6[%d].\n", my_rank, child6);
     MPI_Recv (A22B22, half*half, MPI_INT, child7, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    printf("[%d] receives from child7[%d].\n", my_rank, child7);
+    //printf("[%d] receives from child7[%d].\n", my_rank, child7);
     
     //Time to sum the multiplication results. Each sum will be stored in
     //one quarter of the result matrix C.
@@ -269,9 +269,9 @@ void main(int argc, char** argv) {
         //Receive some division of the job
         MPI_Recv(&rec_str, sizeof(recursion_struct), MPI_BYTE, MPI_ANY_SOURCE, 1, MPI_COMM_WORLD, &status);
         father = status.MPI_SOURCE;
-        printf("[%d] received from %d. Current dimensions of the matrices = %d\n",
-               my_rank, father, rec_str.dim);
-        print_rec_str(&rec_str);
+        //printf("[%d] received from %d. Current dimensions of the matrices = %d\n",
+        //       my_rank, father, rec_str.dim);
+        //print_rec_str(&rec_str);
         C_dim = rec_str.dim;
         
     } else { //root
@@ -310,7 +310,7 @@ void main(int argc, char** argv) {
         
     } else { //root
         t2 = MPI_Wtime();
-        print_matrix(C, MATRIX_DIM);
+        //print_matrix(C, MATRIX_DIM);
         printf("Time taken: %.2f\n", t2-t1);
     }
     
