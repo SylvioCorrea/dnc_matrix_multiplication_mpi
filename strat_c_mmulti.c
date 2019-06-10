@@ -121,13 +121,14 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     recursion_struct A22B22_buffer = {al+half, ac+half, bl+half, bc+half, half, new_division};
     
     //Sending jobs to other processes
+    MPI_Send (&A22B22_buffer, sizeof(recursion_struct), MPI_BYTE, child7, 1, MPI_COMM_WORLD);
     MPI_Send (&A12B21_buffer, sizeof(recursion_struct), MPI_BYTE, child1, 1, MPI_COMM_WORLD);
     MPI_Send (&A11B12_buffer, sizeof(recursion_struct), MPI_BYTE, child2, 1, MPI_COMM_WORLD);
     MPI_Send (&A12B22_buffer, sizeof(recursion_struct), MPI_BYTE, child3, 1, MPI_COMM_WORLD);
     MPI_Send (&A21B11_buffer, sizeof(recursion_struct), MPI_BYTE, child4, 1, MPI_COMM_WORLD);
     MPI_Send (&A22B21_buffer, sizeof(recursion_struct), MPI_BYTE, child5, 1, MPI_COMM_WORLD);
     MPI_Send (&A21B12_buffer, sizeof(recursion_struct), MPI_BYTE, child6, 1, MPI_COMM_WORLD);
-    MPI_Send (&A22B22_buffer, sizeof(recursion_struct), MPI_BYTE, child7, 1, MPI_COMM_WORLD);
+    //MPI_Send (&A22B22_buffer, sizeof(recursion_struct), MPI_BYTE, child7, 1, MPI_COMM_WORLD);
     
     //The process still needs to take care of its own multiplication before joining results.
     //Lets allocate the matrices that will hold the results to be summed;
@@ -291,7 +292,7 @@ void main(int argc, char** argv) {
     
     if(my_rank!=0) { //not-root
         //Non-root nodes still need to send back their results
-        printf("[%d]Sending back matrices of dim %d\n", my_rank, C_dim);
+        printf("[%d]Sending back matrix of dim %d\n", my_rank, C_dim);
         print_matrix(C, C_dim);
         MPI_Send(C, C_dim*C_dim, MPI_INT, father, 1, MPI_COMM_WORLD);
         
