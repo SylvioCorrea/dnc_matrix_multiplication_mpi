@@ -120,8 +120,8 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     recursion_struct A21B12_buffer = {al+half, ac,      bl,      bc+half, half, new_division};
     recursion_struct A22B22_buffer = {al+half, ac+half, bl+half, bc+half, half, new_division};
     
-    printf("children: %d, %d, %d, %d, %d, %d, %d\n",
-           child1, child2, child3, child4, child5, child6, child7);
+    printf("[%d]: children: %d, %d, %d, %d, %d, %d, %d\n",
+           my_rank, child1, child2, child3, child4, child5, child6, child7);
     
     //Sending jobs to other processes
     MPI_Send (&A22B22_buffer, sizeof(recursion_struct), MPI_BYTE, child7, 1, MPI_COMM_WORLD);
