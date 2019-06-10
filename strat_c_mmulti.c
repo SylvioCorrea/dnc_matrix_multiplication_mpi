@@ -6,17 +6,11 @@ some processes sit idle most of the time waiting for processes further down
 on the computation tree to finish their jobs before joining their results.
 
 The computation tree of this divide and conquer strategy has
-branching factor 7. The computation tree will have height equal
-to the number of divisions needed + 1. The program requires this
-tree to be full, that is, the number of processes must be equal
-to sum(7^k), 0<=k<=tree height.
-
-Examples:
-    height  divisions   required number of processes
-    1       0           1
-    2       1           8
-    3       2           57
-    4       3           400
+branching factor 7. The computation tree will expand unevenly. The
+required number of processes for n divisions is given by the recurrence
+        { 1, n=0
+procs(n){
+        { 1 + sum(7*proc(k)) ,0<=k<=n-1, n>1
 
 */
 
@@ -67,6 +61,23 @@ void print_rec_str(recursion_struct *rec_str) {
     printf("al: %d, ac: %d, bl: %d, bc: %d\ndim: %d, division_n: %d\n\n",
            rec_str->al, rec_str->ac, rec_str->bl, rec_str->bc,
            rec_str->dim, rec_str->division_n);
+}
+
+//Calculates the number of required processes to perform
+//N_OF_DIVISIONS using this algorithm.
+int required_procs() {
+    return required_procs_aux(N_OF_DIVISIONS);
+}
+int required_procs_aux(int n) {
+    if(n==0)
+        return 1;
+    
+    int i;
+    int res = 1;
+    for(i=0; i<n; i++) {
+        res += 7*required_procs_aux(i);
+    }
+    return res;
 }
 
 //Recursive function executed by every process.
@@ -231,10 +242,7 @@ void main(int argc, char** argv) {
     
     //===========================================
     //Test if the number of processes is correct
-    int required_procs = 0;
-    for(i=0; i<=N_OF_DIVISIONS; i++) {
-        required_procs += simple_pow(7, i);
-    }
+    int required_procs = required_procs();
     if( proc_n != required_procs ) {
         if(my_rank == 0) {
             int req_procs = 
