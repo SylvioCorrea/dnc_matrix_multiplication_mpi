@@ -156,7 +156,6 @@ void process_recursion(recursion_struct *rec_ptr, int *C) {
     //The recursion will give us A11B11.
     process_recursion(&A11B11_buffer, A11B11);
     //The other processes will give us all other matrices.
-    return;
     //printf("[%d]Expecting matrices of dim %d\n", my_rank, half);
     MPI_Recv (A12B21, half*half, MPI_INT, child1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
     printf("[%d] receives from child1[%d].\n", my_rank, child1);
