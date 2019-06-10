@@ -248,7 +248,7 @@ void main(int argc, char** argv) {
         if(my_rank == 0) {
             int req_procs = 
             printf("Error. required number of processes to perform %d divisions is %d.\n",
-                   N_OF_DIVISIONS, required_procs);
+                   N_OF_DIVISIONS, p);
             printf("Number of processes given by the user: %d.\n", proc_n);
             printf("Aborting.\n");
         }
