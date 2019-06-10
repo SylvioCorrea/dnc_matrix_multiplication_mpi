@@ -1,0 +1,11 @@
+[0]start
+Dimensions of the matrices: 8192x8192
+conquering point: 8192
+number of processes: 1
+
+[0]: curr_dim = 8192. Conquering.
+[0]: mmulti done.
+Multiplication done. Time taken: 5837.30 seconds[0] done
+
+strat a 73 processos: 185.93 sec  184.07
+strat b 73 processos: 212.1 sec  218.31
